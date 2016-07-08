@@ -1,0 +1,1 @@
+1.注意: php 其它语言不同，continue语句作用到 switch 上的作用类似于 break。如果在循环中有一个 switch 并希望 continue 到外层循环中的下一轮循环，请用 continue 2
