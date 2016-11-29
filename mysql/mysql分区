@@ -1,0 +1,31 @@
+
+分区键必须是主键
+分区字段值必须大于表中的值，一般对已有数据的表分区 会创建一个临时表，创建分区后，再数据导入
+
+修改表分区
+主分区:
+ALTER TABLE table PARTITION BY RANGE COLUMNS (date)(
+	PARTITION p1 VALUES LESS THAN (20120101)
+)
+主分区+子分区
+ALTER TABLE table PARTITION BY RANGE COLUMNS (time_day)
+SUBPARTITION BY HASH(area_id)
+SUBPARTITIONS 2(
+	PARTITION p1 VALUES LESS THAN (20150301),
+	PARTITION p2 VALUES LESS THAN (20150601)
+)
+
+
+增加分区
+ALTER TABLE table add PARTITION(
+	PARTITION p5 VALUES LESS THAN (20160301)
+)
+
+查看分区信息
+select * from information_schema.partitions where table_schema=database() and table_name='table'
+
+删除单个分区
+ALTER TABLE table DROP PARTITION p2
+
+删除所有分区
+Alter table table remove partitioning
