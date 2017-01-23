@@ -1,0 +1,28 @@
+计算1到100的和
+
+1:	function sums($s,$n){
+		if($n==0){
+			return $s;
+		}else{
+			$s+=$n;
+			$n--;
+			sums($s,$n);
+		}
+	}
+	$s=0;
+	sums($s,100);
+
+2:	$s=0;
+	$n=100;
+	function sums($s,$n){
+		while(true){
+			$s+=$n;
+			$n--;
+			if($n==0){
+				break;
+			}
+		}
+		return $s;
+	}
+
+第二种性能比较高

@@ -1,0 +1,42 @@
+set_time_limit (0);
+ignore_user_abort(true);//关掉浏览器，PHP脚本也可以继续执行.
+$this->load->library('phpexcel');
+$objPHPExcel = new PHPExcel();
+$objectSheet = $objPHPExcel->getActiveSheet();
+header("Pragma: public");
+header("Expires: 0");
+header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+header("Content-Type: application/force-download");
+header("Content-Type: application/octet-stream");
+header("Content-Type: application/download");
+header('Content-Type: application/vnd.ms-excel;charset=UTF-8');
+header("Content-Disposition: attachment;filename=Report.xls");
+header("Content-Transfer-Encoding: binary ");
+$n = 0;
+$sql = 'select * from plan_place_date limit ?,?';
+for($i=0;$i<1000;$i+=1000){
+    $query = $this->common_model->execute($sql,array($i,1000));
+    while ($row = $query->unbuffered_row()) {
+        $n++;
+        $objPHPExcel->setActiveSheetIndex(0)
+            ->setCellValue('A'.$n, $row->id)
+            ->setCellValue('B'.$n, $row->customer_id)
+            ->setCellValue('C'.$n, $row->plan_type)
+            ->setCellValue('D'.$n, $row->classify)
+            ->setCellValue('E'.$n, $row->project_id)
+            ->setCellValue('F'.$n, $row->plan_id)
+            ->setCellValue('G'.$n, $row->plan_place_id)
+            ->setCellValue('H'.$n, $row->media_id)
+            ->setCellValue('I'.$n, $row->media_type_id)
+            ->setCellValue('J'.$n, $row->path_id)
+            ->setCellValue('K'.$n, $row->path_name)
+            ->setCellValue('L'.$n, $row->cars_type_id)
+            ->setCellValue('M'.$n, $row->date)
+            ->setCellValue('N'.$n, $row->metric_id)
+            ->setCellValue('O'.$n, $row->value)
+            ->setCellValue('P'.$n, $row->status)
+            ->setCellValue('Q'.$n, $row->update_uid);
+    }
+    $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+    $objWriter->save('php://output');
+}

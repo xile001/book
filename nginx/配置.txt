@@ -1,0 +1,2 @@
+client_max_body_size 20m;       客户端提交数据最大数据量
+client_body_buffer_size 3072k;  客户端提交数据大小
